@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Partner
  *
@@ -27,7 +28,6 @@ class Partner
      * @ORM\Column(name="name", type="string", length=255, unique=true)
      */
     private $name;
-
 
     /**
      * Get id
