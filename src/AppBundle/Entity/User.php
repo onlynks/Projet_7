@@ -3,14 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var int
@@ -24,24 +25,22 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="first_name", type="string", length=255)
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
      */
-    private $firstName;
+    private $username;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="last_name", type="string", length=255)
+     * @ORM\Column(name="apiKey", type="integer", unique=true)
      */
-    private $lastName;
+    private $apiKey;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255, unique=true)
-     */
-    private $password;
-
+    public function __construct($username, $apiKey)
+    {
+        $this->username = $username;
+        $this->apiKey = $apiKey;
+    }
 
     /**
      * Get id
@@ -54,75 +53,71 @@ class User
     }
 
     /**
-     * Set firstName
+     * Set username
      *
-     * @param string $firstName
+     * @param string $username
      *
      * @return User
      */
-    public function setFirstName($firstName)
+    public function setUsername($username)
     {
-        $this->firstName = $firstName;
+        $this->username = $username;
 
         return $this;
     }
 
     /**
-     * Get firstName
+     * Get username
      *
      * @return string
      */
-    public function getFirstName()
+    public function getUsername()
     {
-        return $this->firstName;
+        return $this->username;
     }
 
     /**
-     * Set lastName
+     * Set apiKey
      *
-     * @param string $lastName
+     * @param integer $apiKey
      *
      * @return User
      */
-    public function setLastName($lastName)
+    public function setApiKey($apiKey)
     {
-        $this->lastName = $lastName;
+        $this->apiKey = $apiKey;
 
         return $this;
     }
 
     /**
-     * Get lastName
+     * Get apiKey
      *
-     * @return string
+     * @return int
      */
-    public function getLastName()
+    public function getApiKey()
     {
-        return $this->lastName;
+        return $this->apiKey;
     }
 
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return User
-     */
-    public function setPassword($password)
+    public function getRoles()
     {
-        $this->password = $password;
-
-        return $this;
+        return array('ROLE_USER');
     }
 
-    /**
-     * Get password
-     *
-     * @return string
-     */
     public function getPassword()
     {
-        return $this->password;
+
+    }
+
+    public function getSalt()
+    {
+
+    }
+
+    public function eraseCredentials()
+    {
+
     }
 }
 
