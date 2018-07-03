@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            new EightPoints\Bundle\GuzzleBundle\GuzzleBundle()
             
         ];
 
