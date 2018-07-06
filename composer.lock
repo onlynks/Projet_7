@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2a7cc1358332932b644b5ed3a8ac2e9",
+    "content-hash": "1a0ae4acf507e2961dc32bef1a9ee80c",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -61,6 +61,67 @@
                 "tls"
             ],
             "time": "2018-03-29T19:57:20+00:00"
+        },
+        {
+            "name": "csa/guzzle-bundle",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/csarrazi/CsaGuzzleBundle.git",
+                "reference": "bbe54641ad6171dc562034f2824f7c18cec80ca4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/csarrazi/CsaGuzzleBundle/zipball/bbe54641ad6171dc562034f2824f7c18cec80ca4",
+                "reference": "bbe54641ad6171dc562034f2824f7c18cec80ca4",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.1",
+                "php": ">=5.5.0",
+                "symfony/dependency-injection": "^2.7|^3.0",
+                "symfony/filesystem": "^2.7|^3.0",
+                "symfony/framework-bundle": "^2.7|^3.0",
+                "twig/twig": "^1.12|^2.0"
+            },
+            "require-dev": {
+                "doctrine/cache": "^1.1",
+                "namshi/cuzzle": "^2.0",
+                "phpunit/phpunit": "^4.8",
+                "psr/cache": "^1.0",
+                "symfony/phpunit-bridge": "^2.7|^3.0",
+                "symfony/web-profiler-bundle": "^2.3|^3.0"
+            },
+            "suggest": {
+                "doctrine/cache": "Allows caching of responses",
+                "namshi/cuzzle": "Output command to repeat request in command line",
+                "psr/cache": "Allows caching of responses",
+                "tolerance/tolerance": "Allows retrying failed requests"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.3-dev",
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Csa\\Bundle\\GuzzleBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Charles Sarrazin",
+                    "email": "charles@sarraz.in"
+                }
+            ],
+            "description": "A bundle integrating GuzzleHttp >= 4.0",
+            "time": "2017-03-27T07:49:26+00:00"
         },
         {
             "name": "doctrine/annotations",

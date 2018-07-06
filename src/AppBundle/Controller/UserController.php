@@ -17,6 +17,11 @@ class UserController extends Controller
     {
         $token = $request->headers->get('X-AUTH-TOKEN');
 
+        if(!$token)
+        {
+            return new Response('Pas de token valide.');
+        }
+
         $client = new Client([
             'base_uri'=>'https://graph.facebook.com/me?access_token='.$token
         ]);

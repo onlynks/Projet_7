@@ -32,14 +32,22 @@ class User implements UserInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="apiKey", type="integer", unique=true)
+     * @ORM\Column(name="idUser", type="integer", unique=true)
      */
-    private $apiKey;
+    private $idUser;
 
-    public function __construct($username, $apiKey)
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $role;
+
+    public function __construct($username, $idUser, $role)
     {
         $this->username = $username;
-        $this->apiKey = $apiKey;
+        $this->idUser = $idUser;
+        $this->role = $role;
     }
 
     /**
@@ -102,7 +110,7 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return $this->role;
     }
 
     public function getPassword()
