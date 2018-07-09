@@ -27,19 +27,19 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $apiKey = $credentials['token'];
+        $token = $credentials['token'];
 
-        if(null === $apiKey)
+        if(null === $token)
         {
             return;
         }
 
-        return $userProvider->loadUserByUsername($apiKey);
+        return $userProvider->loadUserByUsername($token);
     }
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return false;
+        return true;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)

@@ -32,9 +32,9 @@ class User implements UserInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="idUser", type="integer", unique=true)
+     * @ORM\Column(name="facebookId", type="bigint", unique=true)
      */
-    private $idUser;
+    private $facebookId;
 
     /**
      * @var array
@@ -43,10 +43,10 @@ class User implements UserInterface
      */
     private $role;
 
-    public function __construct($username, $idUser, $role)
+    public function __construct($username, $facebookId, $role)
     {
         $this->username = $username;
-        $this->idUser = $idUser;
+        $this->facebookId = $facebookId;
         $this->role = $role;
     }
 
@@ -87,13 +87,13 @@ class User implements UserInterface
     /**
      * Set apiKey
      *
-     * @param integer $apiKey
+     * @param integer $facebookId
      *
      * @return User
      */
-    public function setApiKey($apiKey)
+    public function setFacebookId($facebookId)
     {
-        $this->apiKey = $apiKey;
+        $this->facebookId = $facebookId;
 
         return $this;
     }
@@ -103,9 +103,9 @@ class User implements UserInterface
      *
      * @return int
      */
-    public function getApiKey()
+    public function getFacebookId()
     {
-        return $this->apiKey;
+        return $this->facebookId;
     }
 
     public function getRoles()

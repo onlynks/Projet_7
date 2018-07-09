@@ -9,16 +9,19 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use GuzzleHttp\Client;
 use JMS\Serializer\Serializer;
+use Doctrine\ORM\EntityManagerInterface;
 
 class FacebookUserProvider implements UserProviderInterface
 {
     private $client;
     private $serializer;
+    private $entityManager;
 
-    public function __construct(Client $client, Serializer $serializer)
+    public function __construct(Client $client, Serializer $serializer, EntityManagerInterface $entityManager)
     {
         $this->client = $client;
         $this->serializer = $serializer;
+        $this->entityManager = $entityManager;
     }
 
     public function loadUserByUsername($token)
@@ -28,14 +31,15 @@ class FacebookUserProvider implements UserProviderInterface
         $res = $response->getBody()->getContents();
         $userData = $this->serializer->deserialize($res, 'array', 'json');
 
-        if ($userData)
-        {
-            return new User($userData['name'], $userData['id'], ['ROLE_USER']);
-        }
+        $user = $this->entityManager->getRepository(User::class)->findOneByfacebookId($userData['id']);
 
-        throw new UsernameNotFoundException(
-        sprintf('Le token "%s" n\'existe pas.', $token)
-        );
+        if(!$user)
+        {
+            throw new UsernameNotFoundException(
+                sprintf('Le token "%s" n\'existe pas.', $token));
+
+        }
+        return $user;
     }
 
     public function refreshUser(UserInterface $user)

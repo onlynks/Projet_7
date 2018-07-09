@@ -7,15 +7,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use GuzzleHttp\Client;
+use AppBundle\Entity\User;
 
 class UserController extends Controller
 {
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
-        $token = $request->headers->get('X-AUTH-TOKEN');
+        /*$token = $request->headers->get('X-AUTH-TOKEN');
 
         if(!$token)
         {
@@ -28,11 +29,25 @@ class UserController extends Controller
 
         $response = $client->request('GET');
 
-        return new Response($response->getBody()->getContents());
+        return new Response($response->getBody()->getContents());*/
+        $user = $this->getUser();
+
+        return new Response('');
     }
 
+    /**
+     * @Route("/createUser", name="create_user")
+     */
     public function createUserAction()
-    {}
+    {
+       /*$em = $this->getDoctrine()->getManager();
+
+       $user = new User('Nicolas Garnier', 10215328352273615, ['ROLE_USER']);
+       $em->persist($user);
+       $em->flush();
+       return new Response('done');
+*/
+    }
 
     public function readPUserAction()
     {}
@@ -52,8 +67,7 @@ class UserController extends Controller
     public function testAction(Request $request)
     {
 
-        $test = $request->headers->get('test');
-var_dump($test);
-        return new Response($test);
+
+        return new Response('');
     }
 }

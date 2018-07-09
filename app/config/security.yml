@@ -5,13 +5,15 @@ security:
             id: Facebook
 
     firewalls:
-
         main:
             anonymous: ~
             stateless: true
             guard:
                 authenticators:
                     - AppBundle\Security\TokenAuthenticator
+
+    access_control:
+       - { path: ^/login, role: ROLE_ADMIN}
 
 
 
