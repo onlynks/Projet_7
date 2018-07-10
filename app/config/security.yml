@@ -4,6 +4,9 @@ security:
         Facebook:
             id: Facebook
 
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+
     firewalls:
         main:
             anonymous: ~

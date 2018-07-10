@@ -18,9 +18,9 @@ services:
 
     Facebook:
         class: AppBundle\Security\FacebookUserProvider
-        arguments: ["@csa_guzzle.client.Facebook_api", "@jms_serializer","@doctrine.orm.entity_manager"]
+        arguments: ["@csa_guzzle.client.Facebook_graph", "@jms_serializer","@doctrine.orm.entity_manager"]
 
-    Test:
+    CodeManager:
         public: true
-        class: AppBundle\Security\Test
-        arguments: ["@doctrine.orm.entity_manager"]
+        class: AppBundle\Service\CodeManager
+        arguments: ["%api_id%", "%api_key%"]

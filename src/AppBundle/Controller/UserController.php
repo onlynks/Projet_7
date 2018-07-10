@@ -6,33 +6,35 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use GuzzleHttp\Client;
 use AppBundle\Entity\User;
 
 class UserController extends Controller
 {
+
     /**
-     * @Route("/login", name="login")
+     * @Route("/testCode", name="testCode")
      */
-    public function loginAction()
+    public function testCodeAction(Request $request)
     {
-        /*$token = $request->headers->get('X-AUTH-TOKEN');
+        $code = $request->headers->get('code');
+        $url = $request->headers->get('url');
 
-        if(!$token)
-        {
-            return new Response('Pas de token valide.');
-        }
+        $codeManager = $this->container->get('CodeManager');
+        $token = $codeManager->seekToken($code, $url);
 
-        $client = new Client([
-            'base_uri'=>'https://graph.facebook.com/me?access_token='.$token
-        ]);
+        return new Response($token);
+    }
 
-        $response = $client->request('GET');
-
-        return new Response($response->getBody()->getContents());*/
-        $user = $this->getUser();
-
-        return new Response('');
+    /**
+     * @Route("/testToken", name="testToken")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function testTokenAction()
+    {
+        $username = $this->getUser()->getUsername();
+        return new Response($username);
     }
 
     /**
@@ -46,14 +48,8 @@ class UserController extends Controller
        $em->persist($user);
        $em->flush();
        return new Response('done');
-*/
+        */
     }
-
-    public function readPUserAction()
-    {}
-
-    public function updateUserAction()
-    {}
 
     public function deleteUserAction()
     {}
@@ -61,13 +57,5 @@ class UserController extends Controller
     public function listUserAction()
     {}
 
-    /**
-     * @Route("/test", name="test")
-     */
-    public function testAction(Request $request)
-    {
 
-
-        return new Response('');
-    }
 }
