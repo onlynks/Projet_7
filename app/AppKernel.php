@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new EightPoints\Bundle\GuzzleBundle\GuzzleBundle(),
             new Csa\Bundle\GuzzleBundle\CsaGuzzleBundle(),
+            new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             
         ];
 

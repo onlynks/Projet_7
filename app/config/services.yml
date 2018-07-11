@@ -24,3 +24,8 @@ services:
         public: true
         class: AppBundle\Service\CodeManager
         arguments: ["%api_id%", "%api_key%"]
+
+    Validator_service:
+        public: true
+        class: AppBundle\Service\Validator
+        arguments: ['@validator']

@@ -3,12 +3,53 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Hateoas\Configuration\Annotation as Hateoas;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Phone
  *
  * @ORM\Table(name="phone")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PhoneRepository")
+ *
+ * @Hateoas\Relation(
+ *     "self",
+ *     href= @Hateoas\Route(
+ *     "read_phone",
+ *     parameters = { "id" = "expr(object.getId())" },
+ *     absolute = true
+ *     )
+ * )
+ * @Hateoas\Relation(
+ *     "update",
+ *     href= @Hateoas\Route(
+ *     "update_phone",
+ *     parameters = { "id" = "expr(object.getId())" },
+ *     absolute = true
+ *     )
+ * )
+ * @Hateoas\Relation(
+ *     "delete",
+ *     href= @Hateoas\Route(
+ *     "delete_phone",
+ *     parameters = { "id" = "expr(object.getId())" },
+ *     absolute = true
+ *     )
+ * )
+ * @Hateoas\Relation(
+ *     "create",
+ *     href= @Hateoas\Route(
+ *     "create_phone",
+ *     absolute = true
+ *     )
+ * )
+ * @Hateoas\Relation(
+ *     "getList",
+ *     href= @Hateoas\Route(
+ *     "list_phone",
+ *     absolute = true
+ *     )
+ * )
  */
 class Phone
 {
@@ -25,13 +66,22 @@ class Phone
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Brand")
+     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
+     * @Assert\NotBlank()
+     */
+    private $brand;
 
     /**
      * @var int
      *
      * @ORM\Column(name="price", type="integer")
+     * @Assert\NotBlank()
      */
     private $price;
 

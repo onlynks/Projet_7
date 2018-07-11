@@ -39,6 +39,12 @@ class BileMoController extends Controller
     public function readPhoneAction($id)
     {
         $phone = $this->getDoctrine()->getRepository('AppBundle:Phone')->find($id);
+        $validator = $this->container->get('Validator_service');
+        if(null != $validator->validateObject($phone))
+        {
+            return $validator->validateObject($phone);
+        }
+
         $data = $this->get('jms_serializer')->serialize($phone, 'json');
 
         if (empty($phone)) {
@@ -102,16 +108,6 @@ class BileMoController extends Controller
      */
     public function listPhoneAction(Request $request)
     {
-        /*
-        $phones = $this->getDoctrine()->getRepository('AppBundle:Phone')->findAll();
-
-        $data = $this->get('jms_serializer')->serialize($phones, 'json');
-
-        $response = new Response($data);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
-        */
         $order = $request->query->get('order', 'asc');
         $maxPerPage = $request->query->get('maxPerPage', 10);
         $currentPage = $request->query->get('currentPage', 1);
