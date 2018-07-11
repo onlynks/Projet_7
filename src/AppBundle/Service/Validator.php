@@ -12,16 +12,17 @@ class Validator
         $this->validator = $validator;
     }
 
-    public function validateObject($object)
+    public function getErrors($object)
+    {
+        $errors = $this->validator->validate($object);
+        return $response = (count($errors) > 0)?true:false;
+    }
+
+    public function getMessage($object)
     {
         $errors = $this->validator->validate($object);
 
-        if (count($errors) > 0)
-        {
-            $errorsString = (string) $errors;
-            return new Response($errorsString);
-        }
-
-        return null;
+        $errorsString = (string) $errors;
+        return new Response($errorsString);
     }
 }

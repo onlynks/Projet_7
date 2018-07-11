@@ -40,9 +40,9 @@ class BileMoController extends Controller
     {
         $phone = $this->getDoctrine()->getRepository('AppBundle:Phone')->find($id);
         $validator = $this->container->get('Validator_service');
-        if(null != $validator->validateObject($phone))
+        if($validator->getErrors($phone))
         {
-            return $validator->validateObject($phone);
+            return $validator->getMessage($phone);
         }
 
         $data = $this->get('jms_serializer')->serialize($phone, 'json');
