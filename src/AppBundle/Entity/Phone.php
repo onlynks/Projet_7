@@ -21,29 +21,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     )
  * )
  * @Hateoas\Relation(
- *     "update",
- *     href= @Hateoas\Route(
- *     "update_phone",
- *     parameters = { "id" = "expr(object.getId())" },
- *     absolute = true
- *     )
- * )
- * @Hateoas\Relation(
- *     "delete",
- *     href= @Hateoas\Route(
- *     "delete_phone",
- *     parameters = { "id" = "expr(object.getId())" },
- *     absolute = true
- *     )
- * )
- * @Hateoas\Relation(
- *     "create",
- *     href= @Hateoas\Route(
- *     "create_phone",
- *     absolute = true
- *     )
- * )
- * @Hateoas\Relation(
  *     "getList",
  *     href= @Hateoas\Route(
  *     "list_phone",
@@ -84,6 +61,13 @@ class Phone
      * @Assert\NotBlank()
      */
     private $price;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Specification", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="specification_id", referencedColumnName="id")
+     * @Assert\NotBlank()
+     */
+    private $specification;
 
 
     /**
@@ -142,6 +126,16 @@ class Phone
     public function getPrice()
     {
         return $this->price;
+    }
+
+    public function setBrand(Brand $brand)
+    {
+        $this->brand = $brand;
+    }
+
+    public function getBrand()
+    {
+        return $this->brand;
     }
 }
 

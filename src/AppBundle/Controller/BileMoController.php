@@ -22,11 +22,14 @@ class BileMoController extends Controller
     {
         $data = $request->getContent();
         $phone = $this->get('jms_serializer')->deserialize($data, 'AppBundle\Entity\Phone', 'json');
+        $brandName = $phone->getBrand()->getName();
+        $brand = $this->getDoctrine()->getRepository('AppBundle:Brand')->findOneByname($brandName);
+        $phone->setBrand($brand);
         $em = $this->getDoctrine()->getManager();
         $em->persist($phone);
         $em->flush();
 
-        return new Response('', Response::HTTP_CREATED);
+        return new Response('Nouveau téléphone créé.', Response::HTTP_CREATED);
     }
 
     /**
@@ -100,7 +103,7 @@ class BileMoController extends Controller
     }
 
     /**
-     * @Route("/listPhone", name="list_phone")
+     * @Route("/phone", name="list_phone")
      * @Method({"GET"})
      *
      * @param Request $request

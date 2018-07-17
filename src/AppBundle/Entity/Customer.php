@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * User_data
  *
- * @ORM\Table(name="user_data")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\User_dataRepository")
+ * @ORM\Table(name="customer")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CustomerRepository")
  */
-class User_data
+class Customer
 {
     /**
      * @var int
