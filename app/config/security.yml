@@ -15,8 +15,7 @@ security:
                 authenticators:
                     - AppBundle\Security\TokenAuthenticator
 
-    access_control:
-       - { path: ^/ , role: ROLE_ADMIN}
+
 
 
 

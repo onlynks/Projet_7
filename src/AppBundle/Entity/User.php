@@ -37,6 +37,12 @@ class User implements UserInterface
     private $facebookId;
 
     /**
+     * @var int
+     * @ORM\OneToOne(targetEntity="Customer", mappedBy="owner")
+     */
+    private $customer;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="roles", type="array")
@@ -111,6 +117,22 @@ class User implements UserInterface
     public function getRoles()
     {
         return $this->role;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param int $customer
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
     }
 
     public function getPassword()

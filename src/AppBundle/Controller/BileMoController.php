@@ -8,12 +8,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use JMS\Serializer\SerializationContext;
 
 class BileMoController extends Controller
 {
     /**
      * @Route("/phone", name="create_phone")
      * @Method({"POST"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
      * @return Response
@@ -36,12 +40,15 @@ class BileMoController extends Controller
      * @Route("/phone/{id}", name="read_phone")
      * @Method({"GET"})
      *
+     * @Security("has_role('ROLE_USER')")
+     *
      * @param $id
      * @return Response
      */
     public function readPhoneAction($id)
     {
         $phone = $this->getDoctrine()->getRepository('AppBundle:Phone')->find($id);
+
         $validator = $this->container->get('Validator_service');
         if($validator->getErrors($phone))
         {
@@ -63,6 +70,8 @@ class BileMoController extends Controller
     /**
      * @Route("/phone/{id}", name="update_phone")
      * @Method({"PUT"})
+     *
+     *@Security("has_role('ROLE_ADMIN')")
      *
      * @param Request $request
      * @param $id
@@ -88,6 +97,8 @@ class BileMoController extends Controller
      * @Route("/phone/{id}", name="delete_phone")
      * @Method({"DELETE"})
      *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
      * @param $id
      * @return Response
      */
@@ -106,6 +117,8 @@ class BileMoController extends Controller
      * @Route("/phone", name="list_phone")
      * @Method({"GET"})
      *
+     * @Security("has_role('ROLE_USER')")
+     *
      * @param Request $request
      * @return Response
      */
@@ -117,11 +130,23 @@ class BileMoController extends Controller
 
         $pagerFanta = $this->getDoctrine()->getRepository('AppBundle:Phone')->search($order, $maxPerPage, $currentPage);
 
-        $data = $this->get('jms_serializer')->serialize((array)$pagerFanta->getCurrentPageResults(), 'json');
+        $data = $this->get('jms_serializer')->serialize((array)$pagerFanta->getCurrentPageResults(), 'json', SerializationContext::create()->setGroups(array('list')));
         $response = new Response($data);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    /**
+     * @Route("test", name="test")
+     */
+    public function testAction()
+    {
+        $url = "http://".$_SERVER["SERVER_NAME"];
+        $path = $url .= $this->container->getParameter('images_path');
+        //return new Response("<img src=\"".$this->container->getParameter('images_path')."s4_mini.jpg\">");
+        //return new Response("<img src=\"../../../Projet_7/web/Images/s4_mini.jpg\">");
+        return new Response('<img src="'.$path.'s4_mini.jpg">');
     }
 
 }

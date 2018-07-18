@@ -7,53 +7,77 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use JMS\Serializer\SerializationContext;
 
 class UserController extends Controller
 {
-
     /**
-     * @Route("/testCode", name="testCode")
-     */
-    public function testCodeAction(Request $request)
-    {
-        $code = $request->headers->get('code');
-        $url = $request->headers->get('url');
-
-        $codeManager = $this->container->get('CodeManager');
-        $token = $codeManager->seekToken($code, $url);
-
-        return new Response($token);
-    }
-
-    /**
-     * @Route("/testToken", name="testToken")
+     * @Route("/getToken", name="getToken")
      * @Security("has_role('ROLE_USER')")
      */
-    public function testTokenAction()
+    public function getTokenAction()
     {
         $username = $this->getUser()->getUsername();
         return new Response($username);
     }
 
     /**
-     * @Route("/createUser", name="create_user")
+     * @Route("/customer/{id}", name="customer_details")
+     * @Method({"GET"})
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @param $id
+     * @return Response
      */
-    public function createUserAction()
+    public function customerDetailsAction($id)
     {
-       /*$em = $this->getDoctrine()->getManager();
+        $customer = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($id);
 
-       $user = new User('Nicolas Garnier', 10215328352273615, ['ROLE_USER']);
-       $em->persist($user);
-       $em->flush();
-       return new Response('done');
-        */
+        if($customer->getOwner()->getUsername() == $this->getUser()->getUsername())
+        {
+            $validator = $this->container->get('Validator_service');
+            if($validator->getErrors($customer))
+            {
+                return $validator->getMessage($customer);
+            }
+
+            $data = $this->get('jms_serializer')->serialize($customer, 'json');
+
+            if (empty($customer)) {
+                return new Response('Customer not found', Response::HTTP_NOT_FOUND);
+            }
+
+            $response = new Response($data);
+            $response->headers->set('Content-Type', 'application/json');
+
+            return $response;
+        }
+        else
+        {
+            return new Response('Vous n\'avez pas l\'accès à ces données.');// ajouter code HTTP
+        }
     }
 
-    public function deleteUserAction()
-    {}
+    /**
+     * @Route("/customer", name="list_customers")
+     * @Method({"GET"})
+     *
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function listCustomerAction()
+    {
+        $customers = $this->getUser()->getCustomer();
+        $data = $this->get('jms_serializer')->serialize($customers, 'json', SerializationContext::create()->setGroups(array('list')));
 
-    public function listUserAction()
-    {}
+        $response =  new Response($data);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+
 
 
 }

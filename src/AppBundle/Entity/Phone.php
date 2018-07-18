@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Phone
@@ -36,6 +37,8 @@ class Phone
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"list"})
      */
     private $id;
 
@@ -44,6 +47,8 @@ class Phone
      *
      * @ORM\Column(name="name", type="string", length=255)
      * @Assert\NotBlank()
+     *
+     * @Serializer\Groups({"list"})
      */
     private $name;
 
@@ -69,6 +74,14 @@ class Phone
      */
     private $specification;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Photo")
+     * @ORM\JoinTable(name="phones_photos",
+     *      joinColumns={@ORM\JoinColumn(name="phone_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="photo_id", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    private $photo;
 
     /**
      * Get id

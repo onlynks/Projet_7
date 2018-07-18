@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * User_data
@@ -18,13 +19,45 @@ class Customer
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"list", "detail"})
      */
     private $id;
+
+    /**
+     * @var int
+     * @ORM\OneToOne(targetEntity="User", mappedBy="id")
+     * @ORM\JoinColumn(name="user", referencedColumnName="id")
+     *
+     * @Serializer\Groups({"detail"})
+     */
+    private $owner;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="first_name", type="string", length=255)
+     *
+     * @Serializer\Groups({"detail", "list"})
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="last_name", type="string", length=255)
+     *
+     * @Serializer\Groups({"detail", "list"})
+     */
+    private $lastName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="gender", type="string", length=255)
+     *
+     * @Serializer\Groups({"detail"})
      */
     private $gender;
 
@@ -32,6 +65,8 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="mail", type="string", length=255, unique=true)
+     *
+     * @Serializer\Groups({"detail"})
      */
     private $mail;
 
@@ -39,6 +74,8 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="adress", type="string", length=255)
+     *
+     * @Serializer\Groups({"detail"})
      */
     private $adress;
 
@@ -46,6 +83,8 @@ class Customer
      * @var \DateTime
      *
      * @ORM\Column(name="birth_date", type="datetime")
+     *
+     * @Serializer\Groups({"detail"})
      */
     private $birthDate;
 
@@ -53,6 +92,8 @@ class Customer
      * @var int
      *
      * @ORM\Column(name="phone_number", type="integer")
+     *
+     * @Serializer\Groups({"detail"})
      */
     private $phoneNumber;
 
@@ -68,17 +109,47 @@ class Customer
     }
 
     /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
      * Set gender
      *
      * @param string $gender
      *
-     * @return User_data
+     * @return string
      */
     public function setGender($gender)
     {
         $this->gender = $gender;
-
-        return $this;
     }
 
     /**
@@ -96,13 +167,11 @@ class Customer
      *
      * @param string $mail
      *
-     * @return User_data
+     * @return string
      */
     public function setMail($mail)
     {
         $this->mail = $mail;
-
-        return $this;
     }
 
     /**
@@ -120,13 +189,11 @@ class Customer
      *
      * @param string $adress
      *
-     * @return User_data
+     * @return string
      */
     public function setAdress($adress)
     {
         $this->adress = $adress;
-
-        return $this;
     }
 
     /**
@@ -143,14 +210,10 @@ class Customer
      * Set birthDate
      *
      * @param \DateTime $birthDate
-     *
-     * @return User_data
      */
     public function setBirthDate($birthDate)
     {
         $this->birthDate = $birthDate;
-
-        return $this;
     }
 
     /**
@@ -167,14 +230,10 @@ class Customer
      * Set phoneNumber
      *
      * @param string $phoneNumber
-     *
-     * @return User_data
      */
     public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
-
-        return $this;
     }
 
     /**
@@ -185,6 +244,22 @@ class Customer
     public function getPhoneNumber()
     {
         return $this->phoneNumber;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param int $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
     }
 }
 
