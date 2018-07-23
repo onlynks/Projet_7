@@ -9,16 +9,30 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JMS\Serializer\SerializationContext;
+use GuzzleHttp\Client;
 
 class UserController extends Controller
 {
     /**
      * @Route("/getToken", name="getToken")
-     * @Security("has_role('ROLE_USER')")
      */
-    public function getTokenAction()
+    public function getTokenAction(Request $request)
+    {
+        $code = $request->headers->get('code');
+        $url = $request->headers->get('url');
+
+        $codeManager = $this->get('codeManager');
+
+        return new Response($codeManager->seekToken($code, $url));
+    }
+
+    /**
+     * @Route("/getName", name="getName")
+     */
+    public function getNameAction(Request $request)
     {
         $username = $this->getUser()->getUsername();
+
         return new Response($username);
     }
 
@@ -75,6 +89,16 @@ class UserController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+
+    /**
+     * @Route("/test", name="test")
+     */
+    public function testAction(Request $request)
+    {
+        $path = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+
+        return new Response($path);
     }
 
 

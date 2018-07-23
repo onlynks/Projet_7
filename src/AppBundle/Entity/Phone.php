@@ -70,7 +70,6 @@ class Phone
     /**
      * @ORM\OneToOne(targetEntity="Specification", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="specification_id", referencedColumnName="id")
-     * @Assert\NotBlank()
      */
     private $specification;
 
