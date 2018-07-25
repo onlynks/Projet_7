@@ -13,17 +13,20 @@ class PhoneType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')->add('price');
+        $builder->add('name')
+                ->add('price')
+                ->add('brand')
+                ->add('specification')
+                ->add('photo');
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Phone',
-            'csrf_protection'   => false
+            'data_class' => 'AppBundle\Entity\Phone'
         ));
     }
 

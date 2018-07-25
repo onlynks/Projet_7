@@ -23,7 +23,7 @@ class UserController extends Controller
 
         $codeManager = $this->get('codeManager');
 
-        return new Response($codeManager->seekToken($code, $url));
+        return new Response($codeManager->seekToken($code, $url), Response::HTTP_OK);
     }
 
     /**
@@ -33,7 +33,7 @@ class UserController extends Controller
     {
         $username = $this->getUser()->getUsername();
 
-        return new Response($username);
+        return new Response($username, Response::HTTP_OK);
     }
 
     /**
@@ -63,14 +63,14 @@ class UserController extends Controller
                 return new Response('Customer not found', Response::HTTP_NOT_FOUND);
             }
 
-            $response = new Response($data);
+            $response = new Response($data, Response::HTTP_OK);
             $response->headers->set('Content-Type', 'application/json');
 
             return $response;
         }
         else
         {
-            return new Response('Vous n\'avez pas l\'accès à ces données.');// ajouter code HTTP
+            return new Response('Vous n\'avez pas l\'accès à ces données.', Response::HTTP_UNAUTHORIZED);// ajouter code HTTP
         }
     }
 
@@ -85,7 +85,7 @@ class UserController extends Controller
         $customers = $this->getUser()->getCustomer();
         $data = $this->get('jms_serializer')->serialize($customers, 'json', SerializationContext::create()->setGroups(array('list')));
 
-        $response =  new Response($data);
+        $response =  new Response($data, Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;

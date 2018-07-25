@@ -61,7 +61,7 @@ class BileMoController extends Controller
             return new Response('Phone not found', Response::HTTP_NOT_FOUND);
         }
 
-        $response = new Response($data);
+        $response = new Response($data, Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
@@ -90,7 +90,7 @@ class BileMoController extends Controller
         $form->submit($phone);
         $em->flush();
 
-        return new Response('Update succeeds');
+        return new Response('Update succeeds', Response::HTTP_OK);
     }
 
     /**
@@ -131,22 +131,35 @@ class BileMoController extends Controller
         $pagerFanta = $this->getDoctrine()->getRepository('AppBundle:Phone')->search($order, $maxPerPage, $currentPage);
 
         $data = $this->get('jms_serializer')->serialize((array)$pagerFanta->getCurrentPageResults(), 'json', SerializationContext::create()->setGroups(array('list')));
-        $response = new Response($data);
+        $response = new Response($data, Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
 
     /**
-     * @Route("test", name="test")
+     * @Route("/setImage/{id}", name="set_image")
+     * @Method({"POST"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
      */
-    public function testAction()
+    public function setImageAction(Request $request, $id)
     {
-        $url = "http://".$_SERVER["SERVER_NAME"];
-        $path = $url .= $this->container->getParameter('images_path');
-        //return new Response("<img src=\"".$this->container->getParameter('images_path')."s4_mini.jpg\">");
-        //return new Response("<img src=\"../../../Projet_7/web/Images/s4_mini.jpg\">");
-        return new Response('<img src="'.$path.'s4_mini.jpg">');
+        $path = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+
+        $data = $request->getContent();
+        $photo = $this->get('jms_serializer')->deserialize($data, 'AppBundle\Entity\Photo', 'json');
+
+        $photo->setName($path.'/Images/'.$photo->getName());
+
+        $phone = $this->getDoctrine()->getRepository('AppBundle:Phone')->find($id);
+        $phone->getPhoto()->add($photo);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($phone);
+        $em->flush();
+
+        return new Response('Image créé', Response::HTTP_CREATED);
     }
 
 }

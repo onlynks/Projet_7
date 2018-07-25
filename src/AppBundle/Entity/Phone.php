@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Hateoas\Configuration\Annotation as Hateoas;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Phone
@@ -63,7 +64,7 @@ class Phone
      * @var int
      *
      * @ORM\Column(name="price", type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
      */
     private $price;
 
@@ -74,13 +75,18 @@ class Phone
     private $specification;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Photo")
+     * @ORM\ManyToMany(targetEntity="Photo", cascade={"persist"})
      * @ORM\JoinTable(name="phones_photos",
      *      joinColumns={@ORM\JoinColumn(name="phone_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="photo_id", referencedColumnName="id", unique=true)}
      *      )
      */
     private $photo;
+
+    public function __construct()
+    {
+        $this->photo = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -148,6 +154,16 @@ class Phone
     public function getBrand()
     {
         return $this->brand;
+    }
+
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
     }
 }
 
