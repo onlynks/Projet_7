@@ -34,18 +34,18 @@ This Token is delivered by Facebook OAuth API.
 ```
 <a href="https://www.facebook.com/v3.0/dialog/oauth?client_id="YourClientId*"&redirect_uri="YourUrl*">Get a code</a>
 ```
-YourClientId: API's Facebook ID.
+YourClientId: API's Facebook ID_.
 YourUrl: Url in your application that will process to the following code to treat the Facebook response.
 
 Here is the code for a Symfony application:
 ```php
         $code = $request->query->get('code');
 
-        $client = new Client(['base_uri'=>'http://localhost/Projet_7/web/app_dev.php/getToken']);
+        $client = new Client(['base_uri'=>'(API path)/getToken']);
         $request = $client->request('GET', null, [
             'headers'=>[
                 'code'=> $code,
-                'url'=> 'http://localhost/frontend-p7/web/app_dev.php/getToken'
+                'url'=> '(Same Url as below: YourUrl)'
             ]
         ]);
 
