@@ -34,10 +34,10 @@ This Token is delivered by Facebook OAuth API.
 ```
 <a href="https://www.facebook.com/v3.0/dialog/oauth?client_id="YourClientId*"&redirect_uri="YourUrl*">Get a code</a>
 ```
-YourClientId: API's Facebook ID.
+**YourClientId**: API's Facebook ID.
 
 
-YourUrl: Url in your application that will process to the following code to treat the Facebook response.
+**YourUrl**: Url in your application that will process to the following code to treat the Facebook response.
 
 Here is the code for a Symfony application:
 ```php
@@ -54,6 +54,17 @@ Here is the code for a Symfony application:
         $apiResponse = json_decode($request->getBody()->getContents(), true);
         $token = $apiResponse['access_token'];
 ```
+
+If you are register as User or Admin in the API you can proceed to the requests with this token.
+exemple:
+
+GET /Projet_7/web/app_dev.php/phone HTTP/1.1
+
+
+Host: localhost
+
+
+X-AUTH-TOKEN: (your token)
 
 ## 4/Utilisation
 
