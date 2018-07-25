@@ -1,87 +1,52 @@
-# Project Title
+# Project 7: Create a web service exposing an API
 
-One Paragraph of project description goes here
+I was charged to develop an API REST for the society BileMo wich is a phone seller.
+The goal of the project is to set accessible a platform where BileMo can propose their phones to others companies and control the custumer administration. 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+* Composer
+* Database
+* Server PHP
+* Facebook App (refer to this tutorial if you don't knw how to get it: https://www.nukesuite.com/fr/support/social-applications/creating-application-from-facebook-developers/)
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+* Clone the project in your repository.
+* Run a composer update
+* Fill the field during the installation (Database host, Database password, API key...)
 
-Say what the step will be
+That's it!
 
-```
-Give the example
-```
+## Utilisation
 
-And repeat
+Here is the list of the requests supported by the API to access the data.
+All request require to be authenticated
 
-```
-until finished
-```
+Base URI: {http://yourBasePath/}
 
-End with an example of getting some data out of the system or using it for a little demo
+User:
+  Phones:
+    *Get a phone: phone/{id}              Method GET
+    *Get the phone list: phone            Method GET
+  Customers:
+    *Get customer details: customer/{id}  Method GET
+    *Get customer list: customer          Method GET
+    *Add a customer: customer             Method POST
+    *Update a customer: customer/{id}     Method PUT
 
-## Running the tests
+Admin:
+  Phones:
+    *Create a phone: phone                Method POST
+    *Update a phone: phone/{id}           Method PUT
 
-Explain how to run the automated tests for this system
+You have to use Json format for PUT and POST methods.
 
-### Break down into end to end tests
+## Author
 
-Explain what these tests test and why
+* **Nicolas Garnier**
 
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
