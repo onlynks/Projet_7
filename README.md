@@ -58,11 +58,9 @@ Here is the code for a Symfony application:
 If you are register as User or Admin in the API you can proceed to the requests with this token.
 exemple:
 
-GET /Projet_7/web/app_dev.php/phone HTTP/1.1
+GET /Projet_7/phone HTTP/1.1
 
-
-Host: localhost
-
+Host: API's host
 
 X-AUTH-TOKEN: (your token)
 
