@@ -1,7 +1,7 @@
 # Project 7: Create a web service exposing an API
 
-I was charged to develop an API REST for the society BileMo wich is a phone seller.
-The goal of the project is to set accessible a platform where BileMo can propose their phones to others companies and control the custumer administration. 
+I was charged to develop a REST API for the society BileMo which is a phone seller.
+The goal of the project is to set a platform where BileMo can propose their phones to others companies and control the customer administration. 
 
 ## 1/Getting Started
 
@@ -11,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 * Composer
 * Database
-* Server PHP
+* PHP Server
 * Facebook App (refer to this tutorial if you don't knw how to get it: https://www.nukesuite.com/fr/support/social-applications/creating-application-from-facebook-developers/)
 
 ### 3/Installing
@@ -19,7 +19,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### API
 
 * Clone the project in your repository.
-* Run a composer update
+* Run a composer install
 * Fill the field during the installation (Database host, Database password, API key...)
 
 That's it!
