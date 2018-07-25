@@ -25,15 +25,29 @@ That's it!
 ## Utilisation
 
 Here is the list of the requests supported by the API to access the data.
-All request require to be authenticated
+All request require to be authenticated. To do this all request must be sent with a X-AUTH-TOKEN Header including your Facebook Token.
 
 Base URI: {http://yourBasePath/}
 
+#### User
+
 | Operation              | Path          | Method  |
 | -----------------------|:-------------:| -------:|
-| Get Phone Details      | phone{id}     |   GET   |
-| col 2 is               | centered      |   $12   |
-| zebra stripes          | are neat      |    $1   |
+| Phone Details          | phone{id}     |   GET   |
+| Phone List             | phone         |   GET   |
+| Customer details       | customer{id}  |   GET   |
+| Customer list          | customer      |   GET   |
+| Add Customer           | customer      |   POST  |
+| Update Customer        | customer{id}  |   PUT   |
+| Delete Customer        | customer{id}  |  DELETE |
+
+#### Admin
+
+| Operation              | Path          | Method  |
+| -----------------------|:-------------:| -------:|
+| Add Phone              | phone         |   POST  |
+| Update Phone           | phone{id}     |   PUT   |
+| Delete Phone           | phone{id}     |  DELETE |
 
 You have to use Json format for PUT and POST methods.
 
