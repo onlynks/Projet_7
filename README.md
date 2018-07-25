@@ -29,20 +29,11 @@ All request require to be authenticated
 
 Base URI: {http://yourBasePath/}
 
-User:
-  Phones:
-    *Get a phone: phone/{id}              Method GET
-    *Get the phone list: phone            Method GET
-  Customers:
-    *Get customer details: customer/{id}  Method GET
-    *Get customer list: customer          Method GET
-    *Add a customer: customer             Method POST
-    *Update a customer: customer/{id}     Method PUT
-
-Admin:
-  Phones:
-    *Create a phone: phone                Method POST
-    *Update a phone: phone/{id}           Method PUT
+| Operation              | Path          | Method  |
+| -----------------------|:-------------:| -------:|
+| Get Phone Details      | phone{id}     |   GET   |
+| col 2 is               | centered      |   $12   |
+| zebra stripes          | are neat      |    $1   |
 
 You have to use Json format for PUT and POST methods.
 
