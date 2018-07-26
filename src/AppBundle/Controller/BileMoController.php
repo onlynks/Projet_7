@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use JMS\Serializer\SerializationContext;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class BileMoController extends Controller
 {
@@ -18,9 +19,6 @@ class BileMoController extends Controller
      * @Method({"POST"})
      *
      * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     * @return Response
      */
     public function createPhoneAction(Request $request)
     {
@@ -42,8 +40,26 @@ class BileMoController extends Controller
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @param $id
-     * @return Response
+     * @ApiDoc(
+     *  section="Phone",
+     *  resource=true,
+     *  description="Get phone details",
+     *  headers={
+     *         {
+     *             "name"="X-AUTH-TOKEN",
+     *             "description"="Authorization token",
+     *             "required"="true"
+     *         }
+     *     },
+     *  requirements={
+     *         {
+     *             "name"="id",
+     *             "dataType"="integer",
+     *             "requirements"="\d+",
+     *             "description"="The phone unique identifier."
+     *         }
+     *     }
+     * )
      */
     public function readPhoneAction($id)
     {
@@ -72,10 +88,6 @@ class BileMoController extends Controller
      * @Method({"PUT"})
      *
      *@Security("has_role('ROLE_ADMIN')")
-     *
-     * @param Request $request
-     * @param $id
-     * @return Response
      */
     public function updatePhoneAction(Request $request, $id)
     {
@@ -98,9 +110,6 @@ class BileMoController extends Controller
      * @Method({"DELETE"})
      *
      * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param $id
-     * @return Response
      */
     public function deletePhoneAction($id)
     {
@@ -119,8 +128,23 @@ class BileMoController extends Controller
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @param Request $request
-     * @return Response
+     * @ApiDoc(
+     *  section="Phone",
+     *  resource=true,
+     *  description="Get a phone list depending of parameters.",
+     *  headers={
+     *         {
+     *             "name"="X-AUTH-TOKEN",
+     *             "description"="Authorization token",
+     *             "required"="true"
+     *         }
+     *     },
+     *  parameters = {
+     *         { "name" = "order", "dataType" = "string", "required"="false", "format" = "asc/desc" },
+     *         { "name" = "maxPerPage", "dataType" = "integer", "required"="false" },
+     *         { "name" = "currentPage", "dataType" = "integer", "required"="false" }
+     *     }
+     * )
      */
     public function listPhoneAction(Request $request)
     {
@@ -133,7 +157,12 @@ class BileMoController extends Controller
         $data = $this->get('jms_serializer')->serialize((array)$pagerFanta->getCurrentPageResults(), 'json', SerializationContext::create()->setGroups(array('list')));
         $response = new Response($data, Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/json');
-
+        /*$response->setCache(array(
+            'etag'          => 4567,
+            'max_age'       => 10,
+            's_maxage'      => 10,
+            'public'        => true,
+        ));*/
         return $response;
     }
 

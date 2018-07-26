@@ -6,27 +6,26 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PhoneType extends AbstractType
+class SpecificationType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')
-                ->add('price')
-                ->add('brand')
-                ->add('specification', SpecificationType::class)
-                ->add('photo');
-    }
-
-    /**
+        $builder->add('system')
+                ->add('cpu_frequency')
+                ->add('ram')
+                ->add('capacity')
+                ->add('size')
+                ->add('screen_definition');
+    }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Phone'
+            'data_class' => 'AppBundle\Entity\Specification'
         ));
     }
 
@@ -35,7 +34,7 @@ class PhoneType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_phone';
+        return 'appbundle_specification';
     }
 
 

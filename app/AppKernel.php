@@ -22,7 +22,8 @@ class AppKernel extends Kernel
             new EightPoints\Bundle\GuzzleBundle\GuzzleBundle(),
             new Csa\Bundle\GuzzleBundle\CsaGuzzleBundle(),
             new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
-            
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

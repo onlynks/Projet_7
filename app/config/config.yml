@@ -30,6 +30,8 @@ framework:
     assets: ~
     php_errors:
         log: true
+    templating:
+            engines: ['twig']
 
 # Twig Configuration
 twig:
@@ -75,3 +77,4 @@ csa_guzzle:
         Facebook_login:
             config:
                 base_uri: https://graph.facebook.com/v3.0/oauth/access_token?
+

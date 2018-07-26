@@ -2,22 +2,25 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PhoneType extends AbstractType
+class CustomerType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')
-                ->add('price')
-                ->add('brand')
-                ->add('specification', SpecificationType::class)
-                ->add('photo');
+        $builder->add('first_name')
+                ->add('last_name')
+                ->add('gender')
+                ->add('mail')
+                ->add('adress')
+                ->add('birth_date')
+                ->add('phone_number');
     }
 
     /**
@@ -26,7 +29,7 @@ class PhoneType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Phone'
+            'data_class' => 'AppBundle\Entity\Customer'
         ));
     }
 
@@ -35,7 +38,7 @@ class PhoneType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_phone';
+        return 'appbundle_customer';
     }
 
 

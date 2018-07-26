@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JMS\Serializer\SerializationContext;
-use GuzzleHttp\Client;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use AppBundle\Form\CustomerType;
 
 class UserController extends Controller
 {
@@ -42,8 +43,26 @@ class UserController extends Controller
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @param $id
-     * @return Response
+     * @ApiDoc(
+     *  section="Customer",
+     *  resource=true,
+     *  description="Get customer details",
+     *  headers={
+     *         {
+     *             "name"="X-AUTH-TOKEN",
+     *             "description"="Authorization token",
+     *             "required"="true"
+     *         }
+     *     },
+     *  requirements={
+     *      {
+     *          "name"="id",
+     *          "dataType"="integer",
+     *          "requirements"="\d+",
+     *          "description"="The customer unique identifier."
+     *      }
+     *  }
+     * )
      */
     public function customerDetailsAction($id)
     {
@@ -79,26 +98,105 @@ class UserController extends Controller
      * @Method({"GET"})
      *
      * @Security("has_role('ROLE_USER')")
+     *
+     * @ApiDoc(
+     *  section="Customer",
+     *  resource=true,
+     *  description="Get a customer list depending of parameters.",
+     *  headers={
+     *         {
+     *             "name"="X-AUTH-TOKEN",
+     *             "description"="Authorization token",
+     *             "required"="true"
+     *         }
+     *     },
+     *  parameters = {
+     *         { "name" = "order", "dataType" = "string", "required"="false", "format" = "asc/desc" },
+     *         { "name" = "maxPerPage", "dataType" = "integer", "required"="false" },
+     *         { "name" = "currentPage", "dataType" = "integer", "required"="false" }
+     *     }
+     * )
      */
-    public function listCustomerAction()
+    public function listCustomerAction(Request $request)
     {
-        $customers = $this->getUser()->getCustomer();
-        $data = $this->get('jms_serializer')->serialize($customers, 'json', SerializationContext::create()->setGroups(array('list')));
+        $order = $request->query->get('order', 'asc');
+        $maxPerPage = $request->query->get('maxPerPage', 10);
+        $currentPage = $request->query->get('currentPage', 1);
 
-        $response =  new Response($data, Response::HTTP_OK);
+        $pagerFanta = $this->getDoctrine()->getRepository('AppBundle:Customer')->search($order, $maxPerPage, $currentPage, $this->getUser()->getId());
+
+        $data = $this->get('jms_serializer')->serialize((array)$pagerFanta->getCurrentPageResults(), 'json', SerializationContext::create()->setGroups(array('list')));
+
+        $response = new Response($data, Response::HTTP_OK);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
     }
 
     /**
-     * @Route("/test", name="test")
+     * @Method({"POST"})
+     * @Route("/customer", name="create_customer")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @ApiDoc(
+     *  section="Customer",
+     *  resource=true,
+     *  description="Add a new customer",
+     *  headers={
+     *         {
+     *             "name"="X-AUTH-TOKEN",
+     *             "description"="Authorization token",
+     *             "required"="true"
+     *         }
+     *     },
+     * )
      */
-    public function testAction(Request $request)
+    public function createAction(Request $request)
     {
-        $path = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+        $data = $request->getContent();
+        $customer = $this->get('jms_serializer')->deserialize($data, 'AppBundle\Entity\Customer', 'json');
+        $customer->setOwner($this->getUser());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($customer);
+        $em->flush();
 
-        return new Response($path);
+        return new Response('Nouveau client ajouté.', Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Method({"PUT"})
+     * @Route("/customer/{id}", name="update_customer")
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @ApiDoc(
+     *  section="Customer",
+     *  resource=true,
+     *  description="Update an existing customer",
+     *  headers={
+     *         {
+     *             "name"="X-AUTH-TOKEN",
+     *             "description"="Authorization token",
+     *             "required"="true"
+     *         }
+     *     },
+     * )
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $customerBefore = $em->getRepository('AppBundle:Customer')->find($id);
+
+        $form = $this->createForm(CustomerType::class, $customerBefore);
+
+        $customer = json_decode($request->getContent(), true);
+        $customer['birth_date'] = new \DateTime($customer['birth_date']);
+
+        $form->submit($customer);
+        $em->flush();
+
+        return new Response('Update succeeds', Response::HTTP_OK);
     }
 
 

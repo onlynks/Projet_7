@@ -165,5 +165,15 @@ class Phone
     {
         $this->photo = $photo;
     }
+    
+    public function getSpecification()
+    {
+        return $this->specification;
+    }
+
+    public function setSpecification($specification): void
+    {
+        $this->specification = $specification;
+    }
 }
 

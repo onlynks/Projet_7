@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * User_data
@@ -26,7 +27,7 @@ class Customer
 
     /**
      * @var int
-     * @ORM\OneToOne(targetEntity="User", mappedBy="id")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
      * @ORM\JoinColumn(name="user", referencedColumnName="id")
      *
      * @Serializer\Groups({"detail"})
@@ -82,7 +83,8 @@ class Customer
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birth_date", type="datetime")
+     * @ORM\Column(name="birth_date", type="date")
+     * @Type("DateTime<'Y-m-d'>")
      *
      * @Serializer\Groups({"detail"})
      */

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
@@ -38,7 +39,7 @@ class User implements UserInterface
 
     /**
      * @var int
-     * @ORM\OneToOne(targetEntity="Customer", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="Customer", mappedBy="owner")
      */
     private $customer;
 
@@ -54,6 +55,7 @@ class User implements UserInterface
         $this->username = $username;
         $this->facebookId = $facebookId;
         $this->role = $role;
+        $this->customer = new ArrayCollection();
     }
 
     /**
