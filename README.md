@@ -1,72 +1,99 @@
-Symfony Standard Edition
-========================
+# Project 7: Create a web service exposing an API
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
+I was charged to develop a REST API for the society BileMo which is a phone seller.
+The goal of the project is to set a platform where BileMo can propose their phones to others companies and control the customer administration. 
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+## 1/Getting Started
 
-What's inside?
---------------
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-The Symfony Standard Edition is configured with the following defaults:
+### 2/Prerequisites
 
-  * An AppBundle you can use to start coding;
+* Composer
+* Database
+* PHP Server
+* Facebook App (refer to this tutorial if you don't knw how to get it: https://www.nukesuite.com/fr/support/social-applications/creating-application-from-facebook-developers/)
 
-  * Twig as the only configured template engine;
+### 3/Installing
 
-  * Doctrine ORM/DBAL;
+### API
 
-  * Swiftmailer;
+* Clone the project in your repository.
+* Run a composer install
+* Fill the field during the installation (Database host, Database password, API key...)
 
-  * Annotations enabled for everything.
+That's it!
 
-It comes pre-configured with the following bundles:
+### Frontend
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+First, you need to install csa/guzzle-bundle in your application (composer require csa/guzzle-bundle/https://packagist.org/packages/csa/guzzle-bundle).
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
+All the request you are going to send will require a token in the header of your request.
+This Token is delivered by Facebook OAuth API.
 
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
+```
+<a href="https://www.facebook.com/v3.0/dialog/oauth?client_id="YourClientId*"&redirect_uri="YourUrl*">Get a code</a>
+```
+**YourClientId**: API's Facebook ID.
 
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
 
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
+**YourUrl**: Url in your application that will process to the following code to treat the Facebook response.
 
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
+Here is the code for a Symfony application:
+```php
+        $code = $request->query->get('code');
 
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
+        $client = new Client(['base_uri'=>'(API path)/getToken']);
+        $request = $client->request('GET', null, [
+            'headers'=>[
+                'code'=> $code,
+                'url'=> '(Same Url as below: YourUrl)'
+            ]
+        ]);
 
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
+        $apiResponse = json_decode($request->getBody()->getContents(), true);
+        $token = $apiResponse['access_token'];
+```
 
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
+If you are register as User or Admin in the API you can proceed to the requests with this token.
+exemple:
 
-  * [**SensioGeneratorBundle**][13] (in dev env) - Adds code generation
-    capabilities
+GET /Projet_7/phone HTTP/1.1
 
-  * [**WebServerBundle**][14] (in dev env) - Adds commands for running applications
-    using the PHP built-in web server
+Host: API's host
 
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
+X-AUTH-TOKEN: (your token)
 
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
+## 4/Utilisation
 
-Enjoy!
+Here is the list of the requests supported by the API to access the data.
+All request require to be authenticated. To do this all request must be sent with a X-AUTH-TOKEN Header including your Facebook Token.
 
-[1]:  https://symfony.com/doc/3.4/setup.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/3.4/doctrine.html
-[8]:  https://symfony.com/doc/3.4/templating.html
-[9]:  https://symfony.com/doc/3.4/security.html
-[10]: https://symfony.com/doc/3.4/email.html
-[11]: https://symfony.com/doc/3.4/logging.html
-[13]: https://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
-[14]: https://symfony.com/doc/current/setup/built_in_web_server.html
+Base URI: {http://yourBasePath/}
+
+#### User
+
+| Operation              | Path          | Method  |
+| -----------------------|:-------------:| -------:|
+| Phone Details          | phone{id}     |   GET   |
+| Phone List             | phone         |   GET   |
+| Customer details       | customer{id}  |   GET   |
+| Customer list          | customer      |   GET   |
+| Add Customer           | customer      |   POST  |
+| Update Customer        | customer{id}  |   PUT   |
+| Delete Customer        | customer{id}  |  DELETE |
+
+#### Admin
+
+| Operation              | Path          | Method  |
+| -----------------------|:-------------:| -------:|
+| Add Phone              | phone         |   POST  |
+| Update Phone           | phone{id}     |   PUT   |
+| Delete Phone           | phone{id}     |  DELETE |
+
+You have to use Json format for PUT and POST methods.
+
+## Author
+
+* **Nicolas Garnier**
+
