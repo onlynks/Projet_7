@@ -26,6 +26,10 @@ That's it!
 
 ### Frontend
 
+You have an available frontend premade to work with : https://github.com/onlynks/frontend-p7
+
+If you don't use this frontend, please read the following instructions.
+
 First, you need to install csa/guzzle-bundle in your application (composer require csa/guzzle-bundle/https://packagist.org/packages/csa/guzzle-bundle).
 
 All the request you are going to send will require a token in the header of your request.
