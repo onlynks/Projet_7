@@ -47,14 +47,10 @@ class Brand
      * Set name
      *
      * @param string $name
-     *
-     * @return Brand
      */
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**

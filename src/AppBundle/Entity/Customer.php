@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\Type;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User_data
@@ -39,6 +40,7 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255)
+     * @Assert\NotBlank()
      *
      * @Serializer\Groups({"detail", "list"})
      */
@@ -48,6 +50,7 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=255)
+     * @Assert\NotBlank()
      *
      * @Serializer\Groups({"detail", "list"})
      */
@@ -57,6 +60,7 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="gender", type="string", length=255)
+     * @Assert\NotBlank()
      *
      * @Serializer\Groups({"detail"})
      */
@@ -66,6 +70,7 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="mail", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      *
      * @Serializer\Groups({"detail"})
      */
@@ -75,6 +80,7 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="adress", type="string", length=255)
+     * @Assert\NotBlank()
      *
      * @Serializer\Groups({"detail"})
      */
@@ -85,6 +91,7 @@ class Customer
      *
      * @ORM\Column(name="birth_date", type="date")
      * @Type("DateTime<'Y-m-d'>")
+     * @Assert\NotBlank()
      *
      * @Serializer\Groups({"detail"})
      */
@@ -94,6 +101,7 @@ class Customer
      * @var int
      *
      * @ORM\Column(name="phone_number", type="integer")
+     * @Assert\NotBlank()
      *
      * @Serializer\Groups({"detail"})
      */

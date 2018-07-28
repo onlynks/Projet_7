@@ -78,14 +78,10 @@ class Specification
      * Set system
      *
      * @param string $system
-     *
-     * @return Specification
      */
     public function setSystem($system)
     {
         $this->system = $system;
-
-        return $this;
     }
 
     /**
@@ -102,14 +98,10 @@ class Specification
      * Set cpuFrequency
      *
      * @param integer $cpuFrequency
-     *
-     * @return Specification
      */
     public function setCpuFrequency($cpuFrequency)
     {
         $this->cpuFrequency = $cpuFrequency;
-
-        return $this;
     }
 
     /**
@@ -126,14 +118,10 @@ class Specification
      * Set ram
      *
      * @param string $ram
-     *
-     * @return Specification
      */
     public function setRam($ram)
     {
         $this->ram = $ram;
-
-        return $this;
     }
 
     /**
@@ -150,14 +138,10 @@ class Specification
      * Set capacity
      *
      * @param string $capacity
-     *
-     * @return Specification
      */
     public function setCapacity($capacity)
     {
         $this->capacity = $capacity;
-
-        return $this;
     }
 
     /**
@@ -174,14 +158,10 @@ class Specification
      * Set size
      *
      * @param string $size
-     *
-     * @return Specification
      */
     public function setSize($size)
     {
         $this->size = $size;
-
-        return $this;
     }
 
     /**
@@ -198,14 +178,10 @@ class Specification
      * Set screenDefinition
      *
      * @param string $screenDefinition
-     *
-     * @return Specification
      */
     public function setScreenDefinition($screenDefinition)
     {
         $this->screenDefinition = $screenDefinition;
-
-        return $this;
     }
 
     /**

@@ -24,7 +24,7 @@ class UserController extends Controller
 
         $codeManager = $this->get('codeManager');
 
-        return new Response($codeManager->seekToken($code, $url), Response::HTTP_OK);
+        return new Response($codeManager->seekToken($code, $url), 200);
     }
 
     /**
@@ -34,7 +34,7 @@ class UserController extends Controller
     {
         $username = $this->getUser()->getUsername();
 
-        return new Response($username, Response::HTTP_OK);
+        return new Response($username, 200);
     }
 
     /**
@@ -73,23 +73,23 @@ class UserController extends Controller
             $validator = $this->container->get('Validator_service');
             if($validator->getErrors($customer))
             {
-                return $validator->getMessage($customer);
+                return new Response($validator->getMessage($customer));
             }
 
             $data = $this->get('jms_serializer')->serialize($customer, 'json');
 
             if (empty($customer)) {
-                return new Response('Customer not found', Response::HTTP_NOT_FOUND);
+                return new Response('Customer not found', 404);
             }
 
-            $response = new Response($data, Response::HTTP_OK);
+            $response = new Response($data, 200);
             $response->headers->set('Content-Type', 'application/json');
 
             return $response;
         }
         else
         {
-            return new Response('Vous n\'avez pas l\'accès à ces données.', Response::HTTP_UNAUTHORIZED);// ajouter code HTTP
+            return new Response('You don\'t have the required authorization to access the resource', 401);// ajouter code HTTP
         }
     }
 
@@ -127,7 +127,7 @@ class UserController extends Controller
 
         $data = $this->get('jms_serializer')->serialize((array)$pagerFanta->getCurrentPageResults(), 'json', SerializationContext::create()->setGroups(array('list')));
 
-        $response = new Response($data, Response::HTTP_OK);
+        $response = new Response($data, 200);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
@@ -161,7 +161,7 @@ class UserController extends Controller
         $em->persist($customer);
         $em->flush();
 
-        return new Response('Nouveau client ajouté.', Response::HTTP_CREATED);
+        return new Response('Customer created.', 201);
     }
 
     /**
@@ -196,7 +196,7 @@ class UserController extends Controller
         $form->submit($customer);
         $em->flush();
 
-        return new Response('Update succeeds', Response::HTTP_OK);
+        return new Response('Update succeeds', 200);
     }
 
 

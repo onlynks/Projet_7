@@ -31,7 +31,7 @@ class BileMoController extends Controller
         $em->persist($phone);
         $em->flush();
 
-        return new Response('Nouveau téléphone créé.', Response::HTTP_CREATED);
+        return new Response('Phone created.', 200);
     }
 
     /**
@@ -77,7 +77,7 @@ class BileMoController extends Controller
             return new Response('Phone not found', Response::HTTP_NOT_FOUND);
         }
 
-        $response = new Response($data, Response::HTTP_OK);
+        $response = new Response($data, 200);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
@@ -102,7 +102,7 @@ class BileMoController extends Controller
         $form->submit($phone);
         $em->flush();
 
-        return new Response('Update succeeds', Response::HTTP_OK);
+        return new Response('Update succeeds', 200);
     }
 
     /**
@@ -155,14 +155,9 @@ class BileMoController extends Controller
         $pagerFanta = $this->getDoctrine()->getRepository('AppBundle:Phone')->search($order, $maxPerPage, $currentPage);
 
         $data = $this->get('jms_serializer')->serialize((array)$pagerFanta->getCurrentPageResults(), 'json', SerializationContext::create()->setGroups(array('list')));
-        $response = new Response($data, Response::HTTP_OK);
+        $response = new Response($data, 200);
         $response->headers->set('Content-Type', 'application/json');
-        /*$response->setCache(array(
-            'etag'          => 4567,
-            'max_age'       => 10,
-            's_maxage'      => 10,
-            'public'        => true,
-        ));*/
+
         return $response;
     }
 
@@ -188,7 +183,7 @@ class BileMoController extends Controller
         $em->persist($phone);
         $em->flush();
 
-        return new Response('Image créé', Response::HTTP_CREATED);
+        return new Response('Image created', 201);
     }
 
 }

@@ -8,7 +8,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
 
-class AbstractRepository extends EntityRepository
+abstract class AbstractRepository extends EntityRepository
 {
     protected function paginate(QueryBuilder $qb, $maxPerPage, $currentPage)
     {

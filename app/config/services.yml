@@ -1,6 +1,5 @@
 parameters:
 
-
 services:
     _defaults:
         autowire: true
@@ -27,5 +26,5 @@ services:
 
     Validator_service:
         public: true
-        class: AppBundle\Service\Validator
+        class: AppBundle\Validator\EntityValidator
         arguments: ['@validator']

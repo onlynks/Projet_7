@@ -14,9 +14,3 @@ security:
             guard:
                 authenticators:
                     - AppBundle\Security\TokenAuthenticator
-
-
-
-
-
-

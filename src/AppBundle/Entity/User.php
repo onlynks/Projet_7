@@ -5,12 +5,15 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * User
  *
  * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ *
+ * @Serializer\ExclusionPolicy("ALL")
  */
 class User implements UserInterface
 {
@@ -27,6 +30,8 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, unique=true)
+     *
+     * @Serializer\Expose
      */
     private $username;
 
@@ -72,14 +77,10 @@ class User implements UserInterface
      * Set username
      *
      * @param string $username
-     *
-     * @return User
      */
     public function setUsername($username)
     {
         $this->username = $username;
-
-        return $this;
     }
 
     /**
@@ -96,14 +97,10 @@ class User implements UserInterface
      * Set apiKey
      *
      * @param integer $facebookId
-     *
-     * @return User
      */
     public function setFacebookId($facebookId)
     {
         $this->facebookId = $facebookId;
-
-        return $this;
     }
 
     /**

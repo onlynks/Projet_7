@@ -102,14 +102,10 @@ class Phone
      * Set name
      *
      * @param string $name
-     *
-     * @return Phone
      */
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -126,14 +122,10 @@ class Phone
      * Set price
      *
      * @param integer $price
-     *
-     * @return Phone
      */
     public function setPrice($price)
     {
         $this->price = $price;
-
-        return $this;
     }
 
     /**

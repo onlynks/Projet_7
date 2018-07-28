@@ -1,9 +1,8 @@
 <?php
 
-namespace AppBundle\Service;
-use Symfony\Component\HttpFoundation\Response;
+namespace AppBundle\Validator;
 
-class Validator
+class EntityValidator
 {
     private $validator;
 
@@ -23,6 +22,6 @@ class Validator
         $errors = $this->validator->validate($object);
 
         $errorsString = (string) $errors;
-        return new Response($errorsString);
+        return $errorsString;
     }
 }
