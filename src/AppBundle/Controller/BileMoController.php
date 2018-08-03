@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\PhoneType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,10 +25,18 @@ class BileMoController extends Controller
     {
         $data = $request->getContent();
         $phone = $this->get('jms_serializer')->deserialize($data, 'AppBundle\Entity\Phone', 'json');
+
+        $validator = $this->container->get('Validator_service');
+        if ($validator->getErrors($phone)) {
+
+            return new JsonResponse(['Error'=>$validator->getMessage($phone)], 404);
+        }
+
         $brandName = $phone->getBrand()->getName();
         $brand = $this->getDoctrine()->getRepository('AppBundle:Brand')->findOneByname($brandName);
         $phone->setBrand($brand);
         $em = $this->getDoctrine()->getManager();
+
         $em->persist($phone);
         $em->flush();
 
@@ -65,17 +74,16 @@ class BileMoController extends Controller
     {
         $phone = $this->getDoctrine()->getRepository('AppBundle:Phone')->find($id);
 
+        if($phone == null){
+            return new Response('This phone doesn\'t exist', 404);
+        }
+
         $validator = $this->container->get('Validator_service');
-        if($validator->getErrors($phone))
-        {
-            return $validator->getMessage($phone);
+        if ($validator->getErrors($phone)) {
+            return new JsonResponse(['Status'=>'This phone isn\'t available.', 'Error'=>$validator->getMessage($phone)], 404);
         }
 
         $data = $this->get('jms_serializer')->serialize($phone, 'json');
-
-        if (empty($phone)) {
-            return new Response('Phone not found', Response::HTTP_NOT_FOUND);
-        }
 
         $response = new Response($data, 200);
         $response->headers->set('Content-Type', 'application/json');
@@ -93,6 +101,10 @@ class BileMoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $phoneBefore = $em->getRepository('AppBundle:Phone')->find($id);
+
+        if($phoneBefore == null){
+            return new Response('This phone doesn\'t exist', 404);
+        }
 
         $form = $this->createForm(PhoneType::class, $phoneBefore);
 
@@ -115,6 +127,10 @@ class BileMoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $phone = $em->getRepository('AppBundle:Phone')->find($id);
+
+        if($phone == null){
+            return new Response('This phone doesn\'t exist', 404);
+        }
 
         $em->remove($phone);
         $em->flush();
@@ -185,5 +201,4 @@ class BileMoController extends Controller
 
         return new Response('Image created', 201);
     }
-
 }

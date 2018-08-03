@@ -64,7 +64,7 @@ class Phone
      * @var int
      *
      * @ORM\Column(name="price", type="integer")
-     * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
+     * @Assert\NotBlank()
      */
     private $price;
 

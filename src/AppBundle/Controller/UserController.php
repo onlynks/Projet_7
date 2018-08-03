@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use JMS\Serializer\SerializationContext;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use AppBundle\Form\CustomerType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends Controller
 {
@@ -68,27 +69,23 @@ class UserController extends Controller
     {
         $customer = $this->getDoctrine()->getRepository('AppBundle:Customer')->find($id);
 
-        if($customer->getOwner()->getUsername() == $this->getUser()->getUsername())
-        {
+        if($customer == null){
+            return new Response('This customer doesn\'t exist', 404);
+        }
+
+        if ($customer->getOwner()->getUsername() == $this->getUser()->getUsername()) {
             $validator = $this->container->get('Validator_service');
-            if($validator->getErrors($customer))
-            {
+            if ($validator->getErrors($customer)) {
                 return new Response($validator->getMessage($customer));
             }
 
             $data = $this->get('jms_serializer')->serialize($customer, 'json');
 
-            if (empty($customer)) {
-                return new Response('Customer not found', 404);
-            }
-
             $response = new Response($data, 200);
             $response->headers->set('Content-Type', 'application/json');
 
             return $response;
-        }
-        else
-        {
+        } else {
             return new Response('You don\'t have the required authorization to access the resource', 401);// ajouter code HTTP
         }
     }
@@ -156,6 +153,13 @@ class UserController extends Controller
     {
         $data = $request->getContent();
         $customer = $this->get('jms_serializer')->deserialize($data, 'AppBundle\Entity\Customer', 'json');
+
+        $validator = $this->container->get('Validator_service');
+        if ($validator->getErrors($customer)) {
+
+            return new JsonResponse(['Error'=>$validator->getMessage($customer)], 404);
+        }
+
         $customer->setOwner($this->getUser());
         $em = $this->getDoctrine()->getManager();
         $em->persist($customer);
@@ -188,6 +192,10 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         $customerBefore = $em->getRepository('AppBundle:Customer')->find($id);
 
+        if($customerBefore == null){
+            return new Response('This customer doesn\'t exist', 404);
+        }
+
         $form = $this->createForm(CustomerType::class, $customerBefore);
 
         $customer = json_decode($request->getContent(), true);
@@ -198,8 +206,4 @@ class UserController extends Controller
 
         return new Response('Update succeeds', 200);
     }
-
-
-
-
 }
